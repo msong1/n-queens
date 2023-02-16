@@ -200,11 +200,13 @@
       var checker = function(row, col) {
         return Boolean(this.attributes[row][col]);
       };
+      debugger;
       var size = this.attributes['n'];
       let counter = 0;
+      // [row, col] <= [0,1] [0,2] [0,3]
       if (row === 0) {
-        for (let i = 0; i < col + 1; i++) { // 0 , 1 , 2
-          if (checker.call(this, row + i, col - i)) { // 0,1 1,2 2,3
+        for (let i = 0; i < col + 1; i++) {           // 0 ,           1 , 2
+          if (checker.call(this, row + i, col - i)) { // [0,1] [1,0]  []
             counter++;
             if (counter > 1) {
               return true;
@@ -212,8 +214,8 @@
           }
         }
       } else {
-        for (let i = 0; i < col - row; i++) { // [1,4] => 3 [2,4] => 2 [3,4]
-          if (checker.call(this, row + i, col - i)) { // 0,1 1,2 2,3
+        for (let i = 0; i < size - row; i++) { // [1,3] => 3 [2,3] => 2
+          if (checker.call(this, row + i, col - i)) { // [0,1] 1,2 2,3
             counter++;
             if (counter > 1) {
               return true;
