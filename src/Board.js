@@ -24,7 +24,7 @@
       }, this);
     },
 
-    togglePiece: function(rowIndex, colIndex) {
+    togglePiece: function(rowIndex, colIndex) { // (2,3)
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
@@ -198,15 +198,17 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function([row, col]) {
       var checker = function(row, col) {
+        // debugger;
         return Boolean(this.attributes[row][col]);
-      };
-      debugger;
+      }.bind(this);
       var size = this.attributes['n'];
       let counter = 0;
       // [row, col] <= [0,1] [0,2] [0,3]
+      // debugger;
       if (row === 0) {
-        for (let i = 0; i < col + 1; i++) {           // 0 ,           1 , 2
-          if (checker.call(this, row + i, col - i)) { // [0,1] [1,0]  []
+        for (let i = 0; i < col + 1; i++) {// 0 ,           1 , 2
+          // debugger;
+          if (checker(row + i, col - i)) { // [0,1] [1,0]  []
             counter++;
             if (counter > 1) {
               return true;
@@ -215,7 +217,7 @@
         }
       } else {
         for (let i = 0; i < size - row; i++) { // [1,3] => 3 [2,3] => 2
-          if (checker.call(this, row + i, col - i)) { // [0,1] 1,2 2,3
+          if (checker(row + i, col - i)) { // [0,1] 1,2 2,3
             counter++;
             if (counter > 1) {
               return true;
@@ -229,10 +231,13 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      debugger;
       var size = this.attributes['n'];
+      if (size === 1) {
+        return false;
+      }
       let coordinates = _.range(1, size).map(num => [0, num]); // [0,...,n-1] [0,1] [0, n-1]
       coordinates = coordinates.concat(_.range(1, size).map(num => [num, size - 1])); // [1,n-1] [2,n] [n-1,]
+      // debugger;
       for (let coordinate of coordinates) {
         if (this.hasMinorDiagonalConflictAt(coordinate)) {
           return true;

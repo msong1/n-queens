@@ -17,9 +17,26 @@ describe('solvers', function() {
         expect(solutionBoard.hasAnyRooksConflicts()).to.be.equal(false);
       });
     });
-
   });
+  // =========== MIN added test
+  describe('findNRooksSolutionMIN()', function() {
 
+    it('finds a valid solution for n of 1-8', function() {
+      _.range(1, 9).map(function(n) {
+        var solutionBoard = new Board(findNRooksSolutionMIN(n));
+        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
+          return memo + _.reduce(row, function(memo, col) {
+            return memo + col;
+          }, 0);
+        }, 0);
+
+        expect(solutionBoard.get('n')).to.equal(n);
+        expect(numPieces).to.equal(n);
+        expect(solutionBoard.hasAnyRooksConflicts()).to.be.equal(false);
+      });
+    });
+  });
+  // ===========================
   describe('countNRooksSolutions()', function() {
 
     it('finds the number of valid solutions for n of 1-8', function() {
@@ -66,6 +83,48 @@ describe('solvers', function() {
 
   });
 
+  // ======
+  describe('findNQueensSolutionMIN()', function() {
+
+    it('finds a valid solution for n of 0-7', function() {
+      // Skip 2 and 3 because they have no solution.
+      [4, 5, 6, 7, 8].map(function(n) {// [0, 1, 4, 5, 6, 7, 8].
+        ///========
+        debugger;
+        console.log(n);
+        var temp = findNQueensSolutionMIN(n);
+        ///
+        var solutionBoard = new Board(findNQueensSolutionMIN(n));
+        console.log(n);
+        debugger;
+        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
+          return memo + _.reduce(row, function(memo, col) {
+            return memo + col;
+          }, 0);
+        }, 0);
+        console.log(n);
+        expect(solutionBoard.get('n')).to.equal(n);
+        expect(numPieces).to.equal(n);
+        expect(solutionBoard.hasAnyQueensConflicts()).to.be.equal(false);
+      });
+
+      // Check 2 and 3 for no solution
+      [2, 3].map(function (n) {
+        var solutionBoard = new Board(findNQueensSolutionMIN(n));
+        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
+          return memo + _.reduce(row, function(memo, col) {
+            return memo + col;
+          }, 0);
+        }, 0);
+
+        expect(numPieces).to.equal(0);
+        expect(solutionBoard.get('n')).to.equal(n);
+      });
+    });
+
+  });
+  // ==================
+
   describe('countNQueensSolutions()', function() {
 
     it('finds the number of valid solutions for n of 0-8', function() {
@@ -80,3 +139,6 @@ describe('solvers', function() {
   });
 
 });
+
+
+//=============
